@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
+    <meta name="author" content="Hỏi Dân IT" />
+    <title>Detail User - Hỏi Dân IT</title>
+
+    <link href="/admin/css/style.css" rel="stylesheet" />
+
+
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            const avatarFile = $("#avatarFile");
+            avatarFile.change(function (e) {
+                const imgURL = URL.createObjectURL(e.target.files[0]);
+                $("#avatarPreview").attr("src", imgURL);
+                $("#avatarPreview").css({ "display": "block" });
+            });
+        });
+    </script>
+
+</head>
+
+<body class="sb-nav-fixed">
+    <%- include('../layout/header'); -%>
+        <div id="layoutSidenav">
+            <%- include('../layout/sidenav'); -%>
+                <div id="layoutSidenav_content">
+                    <main>
+                        <div class="container-fluid px-4">
+                            <h1 class="mt-4">Manage Users</h1>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                                <li class="breadcrumb-item active">
+                                    <a href="/admin/user">Users</a>
+                                </li>
+                            </ol>
+                            <div>
+                                <div class="row">
+                                    <div class="col-6 mx-auto">
+                                        <div style="width: 600px; margin: auto">
+                                            <h4 style="padding: 10px 0">Update User</h4>
+                                            <form action="/admin/update-user/<%= user.id%>" method="post"
+                                                enctype="multipart/form-data">
+                                                <!-- User name -->
+                                                <div class="form-group">
+                                                    <label style="margin: 5px 0px">User name</label>
+                                                    <input type="text" class="form-control" name="username"
+                                                        value="<%= user.fullName%>" />
+                                                </div>
+                                                <!-- email -->
+                                                <div class="form-group">
+                                                    <label style="margin: 5px 0px">Email</label>
+                                                    <input type="email" disabled class="form-control" name="email"
+                                                        value="<%= user.username%>" />
+                                                </div>
+                                                <!-- select role -->
+                                                <div class="row">
+                                                    <div class="form-group col-6">
+                                                        <label style="margin: 5px 0px">Phone</label>
+                                                        <input type="text" class="form-control" name="phone"
+                                                            value="<%= user.phone%>" />
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label style="margin: 5px 0px">State</label>
+                                                        <select name="roleId" class="form-select">
+                                                            <% for (let i=0; i < role.length; i++) { %>
+                                                                <% if (Number(user.roleId)===Number(role[i].id)) { %>
+                                                                    <option value="<%= role[i].id %>" selected>
+                                                                        <%= role[i].name %>
+                                                                    </option>
+                                                                    <% } else { %>
+                                                                        <option value="<%= role[i].id %>">
+                                                                            <%= role[i].name %>
+                                                                        </option>
+                                                                        <% } %>
+                                                                            <% } %>
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- avatar -->
+                                                <div class="form-group">
+                                                    <label for="formFile" style="margin: 5px 0px">Avatar</label>
+                                                    <input class="form-control" type="file" id="avatarFile"
+                                                        accept=".png, .jpg, .jpeg" name="avatar">
+
+                                                </div>
+                                                <!-- img -->
+                                                <% if (user.avatar) { %>
+                                                    <img src="/images/<%= user.avatar %>"
+                                                        style="max-height: 250px; margin-top: 20px;"
+                                                        alt="avatar preview" id="avatarPreview" />
+                                                    <% } else { %>
+                                                        <img style="max-height: 250px; display: none; margin-top: 20px;"
+                                                            alt="avatar preview" id="avatarPreview" />
+                                                        <% } %> <!-- address -->
+                                                            <div class="form-group">
+                                                                <label style="margin: 5px 0px">Address</label>
+                                                                <input type="address" class="form-control"
+                                                                    name="address" value="<%= user.address%>" />
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-primary mt-2">
+                                                                Update
+                                                            </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <%- include('../layout/footer'); -%>
+                </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"></script>
+        <script src="/admin/js/datatables-simple-demo.js"></script>
+</body>
+
+</html>
