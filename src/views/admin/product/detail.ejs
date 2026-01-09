@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
+    <meta name="author" content="Hỏi Dân IT" />
+    <title>Manage Product - Hỏi Dân IT</title>
+
+    <link href="/admin/css/style.css" rel="stylesheet" />
+
+
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            const avatarFile = $("#avatarFile");
+            avatarFile.change(function (e) {
+                const imgURL = URL.createObjectURL(e.target.files[0]);
+                $("#avatarPreview").attr("src", imgURL);
+                $("#avatarPreview").css({ "display": "block" });
+            });
+        });
+    </script>
+
+</head>
+
+<body class="sb-nav-fixed">
+    <%- include('../layout/header'); -%>
+        <div id="layoutSidenav">
+            <%- include('../layout/sidenav'); -%>
+                <div id="layoutSidenav_content">
+                    <main>
+                        <div class="container-fluid px-4">
+                            <h1 class="mt-4">Detail Products</h1>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                                <li class="breadcrumb-item active">
+                                    <a href="/admin/product">Products</a>
+                                </li>
+                            </ol>
+                            <div>
+                                <div class="row">
+                                    <div class="col-6 mx-auto">
+                                        <div style="width: 600px; margin: auto">
+
+
+                                            <h4 style="padding: 10px 0">Detail Product</h4>
+                                            <form action="/admin/product/update/<%= productDetail.id%>" method="post"
+                                                enctype="multipart/form-data">
+                                                <!-- name & price -->
+                                                <div class="row">
+                                                    <div class="form-group col-6">
+                                                        <label style="margin: 5px 0px">Name</label>
+                                                        <input type="text" class="form-control" name="name"
+                                                            placeholder="Laptop Gaming"
+                                                            value="<%= productDetail.name%>" />
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label style="margin: 5px 0px">Price</label>
+                                                        <input type="number" class="form-control" name="price"
+                                                            placeholder="Laptop Gaming"
+                                                            value="<%= productDetail.price%>" />
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- des-detail -->
+                                                <div class="form-group">
+                                                    <label style="margin: 5px 0px">Detail Description</label>
+                                                    <textarea class="form-control" name="detailDesc"
+                                                        id=""><%= productDetail.detailDesc%></textarea>
+                                                </div>
+                                                <!-- select role -->
+                                                <div class="row">
+                                                    <div class="form-group col-6">
+                                                        <label style="margin: 5px 0px">Short Description</label>
+                                                        <input type="text" class="form-control" name="shortDesc"
+                                                            value="<%= productDetail.shortDesc%>" />
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label style="margin: 5px 0px">Quantity</label>
+                                                        <input type="text" class="form-control" name="quantity"
+                                                            value="<%= productDetail.quantity%>" />
+                                                    </div>
+                                                </div>
+                                                <!-- address -->
+                                                <div class="row">
+                                                    <div class="mb-3 col-6">
+                                                        <label class="form-label">Factory</label>
+                                                        <select name="factory" class="form-select">
+                                                            <option value="APPLE">Apple (MacBook)</option>
+                                                            <option value="ASUS">Asus</option>
+                                                            <option value="LENOVO">Lenovo</option>
+                                                            <option value="DELL">Dell</option>
+                                                            <option value="LG">LG</option>
+                                                            <option value="ACER">Acer</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3 col-6">
+                                                        <label class="form-label">Target</label>
+                                                        <select name="target" class="form-select">
+                                                            <option value="GAMING">Gaming</option>
+                                                            <option value="SINHVIEN-VANPHONG">Sinh viên - Văn
+                                                                phòng
+                                                            </option>
+                                                            <option value="THIET-KE-DO-HOA">Thiết kế đồ họa
+                                                            </option>
+                                                            <option value="MONG-NHE">Mỏng nhẹ</option>
+                                                            <option value="DOANH-NHAN">Doanh nhân</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- avatar -->
+                                                <div class="form-group">
+                                                    <label for="formFile" style="margin: 5px 0px">Avatar</label>
+                                                    <input class="form-control" type="file" id="avatarFile"
+                                                        accept=".png, .jpg, .jpeg" name="image">
+
+                                                </div>
+                                                <!-- img -->
+                                                <div>
+                                                    <% if (productDetail.image) { %>
+                                                        <img src="/images/product/<%= productDetail.image %>"
+                                                            style="max-height: 250px; margin-top: 20px;"
+                                                            alt="avatar preview" id="avatarPreview" />
+                                                        <% } else { %>
+                                                            <img style="max-height: 250px; display: none; margin-top: 20px;"
+                                                                alt="avatar preview" id="avatarPreview" />
+                                                            <% } %>
+                                                </div>
+
+
+
+
+                                                <button type="submit" class="btn btn-warning mt-2">
+                                                    Submit
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <%- include('../layout/footer'); -%>
+                </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"></script>
+        <script src="/admin/js/datatables-simple-demo.js"></script>
+</body>
+
+</html>

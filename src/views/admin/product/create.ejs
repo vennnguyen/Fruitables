@@ -38,90 +38,103 @@
                             <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
                                 <li class="breadcrumb-item active">
-                                    <a href="/admin/user">Products</a>
+                                    <a href="/admin/product">Products</a>
                                 </li>
                             </ol>
                             <div>
                                 <div class="row">
                                     <div class="col-6 mx-auto">
                                         <div style="width: 600px; margin: auto">
-                                            <h4 style="padding: 10px 0">Create Product</h4>
-                                            <form action="/admin/create-product" method="post"
-                                                enctype="multipart/form-data">
-                                                <!-- name & price -->
-                                                <div class="row">
-                                                    <div class="form-group col-6">
-                                                        <label style="margin: 5px 0px">Name</label>
-                                                        <input type="text" class="form-control" name="name"
-                                                            placeholder="Laptop Gaming" />
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <label style="margin: 5px 0px">Price</label>
-                                                        <input type="number" class="form-control" name="price"
-                                                            placeholder="Laptop Gaming" />
-                                                    </div>
+
+                                            <% errorZod.forEach(function(e) { %>
+                                                <div class="alert alert-danger mb-3">
+                                                    <%= e%>
                                                 </div>
+                                                <% }); %>
+                                                    <h4 style="padding: 10px 0">Create Product</h4>
+                                                    <form action="/admin/create-product" method="post"
+                                                        enctype="multipart/form-data">
+                                                        <!-- name & price -->
+                                                        <div class="row">
+                                                            <div class="form-group col-6">
+                                                                <label style="margin: 5px 0px">Name</label>
+                                                                <input type="text" class="form-control" name="name"
+                                                                    placeholder="Laptop Gaming"
+                                                                    value="<%= oldData.name%>" />
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <label style="margin: 5px 0px">Price</label>
+                                                                <input type="number" class="form-control" name="price"
+                                                                    placeholder="Laptop Gaming"
+                                                                    value="<%= oldData.price%>" />
+                                                            </div>
+                                                        </div>
 
 
-                                                <!-- des-detail -->
-                                                <div class="form-group">
-                                                    <label style="margin: 5px 0px">Detail Description</label>
-                                                    <textarea class="form-control" name="des-detail" id=""></textarea>
-                                                </div>
-                                                <!-- select role -->
-                                                <div class="row">
-                                                    <div class="form-group col-6">
-                                                        <label style="margin: 5px 0px">Short Description</label>
-                                                        <input type="text" class="form-control" name="short-des" />
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <label style="margin: 5px 0px">Quantity</label>
-                                                        <input type="text" class="form-control" name="quantity" />
-                                                    </div>
-                                                </div>
-                                                <!-- address -->
-                                                <div class="row">
-                                                    <div class="mb-3 col-6">
-                                                        <label class="form-label">Factory</label>
-                                                        <select name="factory" class="form-select">
-                                                            <option value="APPLE">Apple (MacBook)</option>
-                                                            <option value="ASUS">Asus</option>
-                                                            <option value="LENOVO">Lenovo</option>
-                                                            <option value="DELL">Dell</option>
-                                                            <option value="LG">LG</option>
-                                                            <option value="ACER">Acer</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3 col-6">
-                                                        <label class="form-label">Target</label>
-                                                        <select name="target" class="form-select">
-                                                            <option value="GAMING">Gaming</option>
-                                                            <option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
-                                                            </option>
-                                                            <option value="THIET-KE-DO-HOA">Thiết kế đồ họa</option>
-                                                            <option value="MONG-NHE">Mỏng nhẹ</option>
-                                                            <option value="DOANH-NHAN">Doanh nhân</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- avatar -->
-                                                <div class="form-group">
-                                                    <label for="formFile" style="margin: 5px 0px">Avatar</label>
-                                                    <input class="form-control" type="file" id="avatarFile"
-                                                        accept=".png, .jpg, .jpeg" name="image">
+                                                        <!-- des-detail -->
+                                                        <div class="form-group">
+                                                            <label style="margin: 5px 0px">Detail Description</label>
+                                                            <textarea class="form-control" name="detailDesc"
+                                                                id=""><%= oldData.detailDesc%></textarea>
+                                                        </div>
+                                                        <!-- select role -->
+                                                        <div class="row">
+                                                            <div class="form-group col-6">
+                                                                <label style="margin: 5px 0px">Short Description</label>
+                                                                <input type="text" class="form-control" name="shortDesc"
+                                                                    value="<%= oldData.shortDesc%>" />
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <label style="margin: 5px 0px">Quantity</label>
+                                                                <input type="text" class="form-control" name="quantity"
+                                                                    value="<%= oldData.quantity%>" />
+                                                            </div>
+                                                        </div>
+                                                        <!-- address -->
+                                                        <div class="row">
+                                                            <div class="mb-3 col-6">
+                                                                <label class="form-label">Factory</label>
+                                                                <select name="factory" class="form-select">
+                                                                    <option value="APPLE">Apple (MacBook)</option>
+                                                                    <option value="ASUS">Asus</option>
+                                                                    <option value="LENOVO">Lenovo</option>
+                                                                    <option value="DELL">Dell</option>
+                                                                    <option value="LG">LG</option>
+                                                                    <option value="ACER">Acer</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3 col-6">
+                                                                <label class="form-label">Target</label>
+                                                                <select name="target" class="form-select">
+                                                                    <option value="GAMING">Gaming</option>
+                                                                    <option value="SINHVIEN-VANPHONG">Sinh viên - Văn
+                                                                        phòng
+                                                                    </option>
+                                                                    <option value="THIET-KE-DO-HOA">Thiết kế đồ họa
+                                                                    </option>
+                                                                    <option value="MONG-NHE">Mỏng nhẹ</option>
+                                                                    <option value="DOANH-NHAN">Doanh nhân</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <!-- avatar -->
+                                                        <div class="form-group">
+                                                            <label for="formFile" style="margin: 5px 0px">Avatar</label>
+                                                            <input class="form-control" type="file" id="avatarFile"
+                                                                accept=".png, .jpg, .jpeg" name="image">
 
-                                                </div>
-                                                <!-- img -->
-                                                <img style="max-height: 250px; display: none; margin-top: 20px;"
-                                                    alt="avatar preview" id="avatarPreview" />
+                                                        </div>
+                                                        <!-- img -->
+                                                        <img style="max-height: 250px; display: none; margin-top: 20px;"
+                                                            alt="avatar preview" id="avatarPreview" />
 
 
 
 
-                                                <button type="submit" class="btn btn-primary mt-2">
-                                                    Submit
-                                                </button>
-                                            </form>
+                                                        <button type="submit" class="btn btn-warning mt-2">
+                                                            Submit
+                                                        </button>
+                                                    </form>
                                         </div>
                                     </div>
                                 </div>

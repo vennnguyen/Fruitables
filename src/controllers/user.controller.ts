@@ -1,5 +1,6 @@
 import { log } from "console";
 import { Request, Response } from "express";
+import { getAllProductService } from "services/client/product.service";
 import {
   getAllRole,
   getAllUser,
@@ -10,7 +11,8 @@ import {
 } from "services/user.service";
 
 const getHomePage = async (req: Request, res: Response) => {
-  res.render("client/home/show");
+  const products = await getAllProductService();
+  res.render("client/home/show", { products });
 };
 
 const getUserPage = async (req: Request, res: Response) => {

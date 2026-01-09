@@ -40,8 +40,35 @@
                                             <th scope="col">Action</th>
                                     </thead>
                                     <tbody>
-
-                                        <!-- <tr>
+                                        <% for(var i=0; i < products.length; i++) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= products[i].id %>
+                                                </td>
+                                                <td>
+                                                    <%= products[i].name %>
+                                                </td>
+                                                <td>
+                                                    <%= products[i].price %>
+                                                </td>
+                                                <td>
+                                                    <%= products[i].factory %>
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; gap: 10px;">
+                                                        <form action="/admin/product/view/<%= products[i].id %>"
+                                                            method="get">
+                                                            <button class="btn btn-warning">View</button>
+                                                        </form>
+                                                        <form action="/admin/product/delete/<%= products[i].id %>"
+                                                            method="post">
+                                                            <button class="btn btn-danger">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                                <!-- <tr>
       <th scope="row">1</th>
       <td>Mark</td>
       <td>Otto</td>

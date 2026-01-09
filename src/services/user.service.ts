@@ -3,10 +3,13 @@ import getConnection from "config/db";
 import { prisma } from "config/client";
 import e from "express";
 import { ACCOUNT_TYPE } from "config/constant";
-import bcrypt from "bcrypt";
+import bcrypt, { compare } from "bcrypt";
 const saltRounds = 10;
 const hashPassword = async (plainText: string) => {
   return await bcrypt.hash(plainText, saltRounds);
+};
+const comparePassword = async (plainText: string, password: string) => {
+  return await bcrypt.compare(plainText, password);
 };
 const handleSubmitForm = async (
   username: string,
@@ -97,4 +100,5 @@ export {
   getDetailUser,
   handleUpdateUser,
   getAllRole,
+  comparePassword,
 };
