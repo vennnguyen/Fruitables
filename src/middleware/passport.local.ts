@@ -1,6 +1,10 @@
 import passport from "passport";
 import { Strategy as localStrategy } from "passport-local";
-import { handleLogin } from "services/auth/auth.service";
+import {
+  getUserWithRoleByIdService,
+  handleLogin,
+} from "services/auth/auth.service";
+import { getDetailUser } from "services/user.service";
 
 const configPassportLocal = () => {
   passport.use(
@@ -20,18 +24,19 @@ const configPassportLocal = () => {
   );
 
   passport.serializeUser(function (user: any, cb) {
-    process.nextTick(function () {
-      return cb(null, {
-        id: user.id,
-        username: user.username,
-      });
+    // trả ra client
+    return cb(null, {
+      id: user.id,
+      username: user.username,
     });
   });
 
-  passport.deserializeUser(function (user, cb) {
-    process.nextTick(function () {
-      return cb(null, user);
-    });
+  passport.deserializeUser(async function (user: any, cb) {
+    // từ trên query db lấy user
+    const { id } = user;
+    const userDB = await getUserWithRoleByIdService(id);
+
+    return cb(null, { ...userDB });
   });
 };
 

@@ -29,12 +29,13 @@ import {
 } from "controllers/auth/auth.controller";
 import passport from "passport";
 import configPassportLocal from "src/middleware/passport.local";
+import { isLogin } from "src/middleware/auth";
 
 const routes = express.Router();
 
 const webRoutes = (app: Express) => {
   // login && register
-  routes.get("/login", getPageLogin);
+  routes.get("/login", isLogin, getPageLogin); //routes -> middleware -> controller -> service
   routes.post(
     "/login",
     passport.authenticate("local", {

@@ -6,20 +6,36 @@ import { initDatabase } from "config/seed";
 import passport from "passport";
 import configPassportLocal from "./middleware/passport.local";
 import session from "express-session";
+import { PrismaClient } from "@prisma/client";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 
 const app = express();
 // config session
 app.use(
   session({
-    secret: "keyboard cat",
-    resave: false,
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+    },
+    secret: "a santa at nasa",
+    resave: true,
     saveUninitialized: true,
+    store: new PrismaSessionStore(new PrismaClient(), {
+      checkPeriod: 2 * 60 * 1000, //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
   })
 );
 // config passport
 app.use(passport.initialize());
 app.use(passport.authenticate("session"));
 configPassportLocal();
+
+// middleware user local khi login thành công
+app.use((req, res, next) => {
+  res.locals.user = req.user ?? null; // pass user object all to locals
+  next();
+});
 //config view engine
 app.set("view engine", "ejs");
 
