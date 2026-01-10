@@ -5,6 +5,7 @@ import {
   handleLogin,
 } from "services/auth/auth.service";
 import { getDetailUser } from "services/user.service";
+// import { TUserRole } from "src/types";
 
 const configPassportLocal = () => {
   passport.use(

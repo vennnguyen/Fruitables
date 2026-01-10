@@ -1,4 +1,5 @@
 // const express = require('express');
+/// <reference path="./types/index.d.ts"/>
 import express from "express";
 import "dotenv/config";
 import webRoutes from "./routes/web";
@@ -8,6 +9,7 @@ import configPassportLocal from "./middleware/passport.local";
 import session from "express-session";
 import { PrismaClient } from "@prisma/client";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
+import { render } from "ejs";
 
 const app = express();
 // config session
@@ -54,7 +56,10 @@ webRoutes(app);
 // init fake database
 initDatabase();
 const PORT = process.env.PORT || 8080;
-
+// handle 404 not found
+app.use((req, res) => {
+  res.render("status/404");
+});
 app.listen(PORT, () => {
   console.log(`My app is running on ${PORT}`);
 });

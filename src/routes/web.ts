@@ -14,7 +14,10 @@ import {
   getDashBoardPage,
 } from "controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
-import { getProductDetails } from "controllers/client/product.controller";
+import {
+  getProductDetails,
+  postProductToCart,
+} from "controllers/client/product.controller";
 import {
   getAdminCreateProduct,
   postCreateProduct,
@@ -25,27 +28,34 @@ import {
 import {
   getPageLogin,
   getPageRegister,
+  getSuccessRedirectPage,
   postCreateAccount,
+  postLogout,
 } from "controllers/auth/auth.controller";
 import passport from "passport";
 import configPassportLocal from "src/middleware/passport.local";
-import { isLogin } from "src/middleware/auth";
+import { isAdmin, isLogin } from "src/middleware/auth";
 
 const routes = express.Router();
 
 const webRoutes = (app: Express) => {
   // login && register
-  routes.get("/login", isLogin, getPageLogin); //routes -> middleware -> controller -> service
+  routes.get("/login", getPageLogin); //routes -> middleware -> controller -> service
+  routes.get("/success-redirect", getSuccessRedirectPage);
   routes.post(
     "/login",
     passport.authenticate("local", {
-      successRedirect: "/",
+      successRedirect: "/success-redirect",
       failureRedirect: "/login",
       failureMessage: true,
     })
   );
+
   routes.get("/register", getPageRegister);
   routes.post("/register/create-account", postCreateAccount);
+
+  // logout
+  routes.post("/logout", postLogout);
 
   //home
   routes.get("/", getHomePage);
@@ -90,7 +100,8 @@ const webRoutes = (app: Express) => {
 
   //client
   routes.get("/product/detail-product/:id", getProductDetails);
+  routes.post("/add-product-to-cart/:id", postProductToCart);
 
-  app.use("/", routes);
+  app.use("/", isAdmin, routes); // tất cả url đều phải qua middleware isAdmin
 };
 export default webRoutes;

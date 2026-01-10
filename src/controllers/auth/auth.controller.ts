@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { postCreateAccountService } from "services/auth/auth.service";
 import { registerSchema, TRegisterSchema } from "src/validation/auth.schema";
 const getPageLogin = (req: Request, res: Response) => {
@@ -37,4 +37,26 @@ const postCreateAccount = async (req: Request, res: Response) => {
     return res.render("auth/login");
   }
 };
-export { getPageLogin, getPageRegister, postCreateAccount };
+const getSuccessRedirectPage = async (req: Request, res: Response) => {
+  const user = req.user as any;
+  if (user?.role?.name === "ADMIN") {
+    return res.redirect("/admin");
+  }
+  return res.redirect("/");
+};
+const postLogout = (req: Request, res: Response, next: NextFunction) => {
+  req.logout((error) => {
+    if (error) {
+      return next(error);
+    } else {
+      return res.redirect("/");
+    }
+  });
+};
+export {
+  getPageLogin,
+  getPageRegister,
+  postCreateAccount,
+  getSuccessRedirectPage,
+  postLogout,
+};

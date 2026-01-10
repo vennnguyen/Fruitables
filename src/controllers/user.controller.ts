@@ -23,8 +23,6 @@ const getUserPage = async (req: Request, res: Response) => {
 };
 
 const postUserPage = async (req: Request, res: Response) => {
-  console.log(req.body);
-
   const { username, email, address, role, phone } = req.body;
   const avatar = req.file?.filename ?? "";
 
