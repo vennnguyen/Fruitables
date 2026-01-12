@@ -3,7 +3,7 @@ import {
   getProductDetailService,
   postProductToCartService,
 } from "services/client/product.service";
-import { productFilter } from "services/client/productFilter";
+import { getProductWithFilter } from "services/client/productFilter";
 import { countTotalProductPage, getAllProduct } from "services/product.service";
 
 const getProductDetails = async (req: Request, res: Response) => {
@@ -19,19 +19,35 @@ const postProductToCart = async (req: Request, res: Response) => {
 };
 
 const getFilterProductPage = async (req: Request, res: Response) => {
-  const { page } = req.query;
+  const {
+    page,
+    factory = "",
+    target = "",
+    price = "",
+    sort = "",
+  } = req.query as {
+    page?: string;
+    factory: string;
+    target: string;
+    price: string;
+    sort: string;
+  };
+
   let currentPage = page ? +page : 1;
   if (currentPage <= 0) currentPage = 1;
-  // const products = await getAllProduct(currentPage);
-  // const totalPage = await countTotalProductPage();
-  // return res.render("client/home/product-filter", {
-  //   products,
-  //   totalPages: +totalPage,
-  //   page: +currentPage,
-  // });
-  const products = await productFilter(["APPLE", "DELL"]);
-  res.status(200).json({
-    data: products,
+
+  const data = await getProductWithFilter(
+    currentPage,
+    6,
+    factory,
+    target,
+    price,
+    sort
+  );
+  return res.render("client/home/product-filter", {
+    products: data.products,
+    totalPages: +data.totalPage,
+    page: +currentPage,
   });
 };
 export { getProductDetails, postProductToCart, getFilterProductPage };
