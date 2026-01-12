@@ -2,7 +2,7 @@ import getConnection from "config/db";
 
 import { prisma } from "config/client";
 import e from "express";
-import { ACCOUNT_TYPE } from "config/constant";
+import { ACCOUNT_TYPE, TOTAL_ITEM_PAGE } from "config/constant";
 import bcrypt, { compare } from "bcrypt";
 const saltRounds = 10;
 const hashPassword = async (plainText: string) => {
@@ -34,14 +34,24 @@ const handleSubmitForm = async (
   });
 };
 
-const getAllUser = async () => {
+const getAllUser = async (page: number) => {
   try {
-    const user = await prisma.user.findMany();
+    const pageSize = TOTAL_ITEM_PAGE;
+    const skip = (page - 1) * pageSize;
+    const user = await prisma.user.findMany({
+      skip: skip,
+      take: pageSize,
+    });
     return user;
   } catch (err) {
     console.log(err);
     return [];
   }
+};
+const countTotalUserPage = async () => {
+  const pageSize = TOTAL_ITEM_PAGE;
+  const user = await prisma.user.count();
+  return Math.ceil(user / pageSize);
 };
 // get roles
 const getAllRole = async () => {
@@ -101,4 +111,5 @@ export {
   handleUpdateUser,
   getAllRole,
   comparePassword,
+  countTotalUserPage,
 };

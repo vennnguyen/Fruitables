@@ -15,6 +15,7 @@ import {
 } from "controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
 import {
+  getFilterProductPage,
   getProductDetails,
   postProductToCart,
 } from "controllers/client/product.controller";
@@ -35,6 +36,19 @@ import {
 import passport from "passport";
 import configPassportLocal from "src/middleware/passport.local";
 import { isAdmin, isLogin } from "src/middleware/auth";
+import {
+  addProductToCartFromDetail,
+  getCartPage,
+  postDeleteCartItem,
+  postHandleCartToCheckout,
+} from "controllers/client/cart.controller";
+import {
+  getCheckoutPage,
+  getThankPage,
+  postPlaceOrder,
+} from "controllers/client/checkout.controller";
+import { getDetailOrder } from "controllers/admin/order.controller";
+import { getOrderHistoryPage } from "controllers/client/order-history.controller";
 
 const routes = express.Router();
 
@@ -59,6 +73,7 @@ const webRoutes = (app: Express) => {
 
   //home
   routes.get("/", getHomePage);
+  routes.get("/products", getFilterProductPage);
 
   routes.post("/handle-update-user/:id", updateUser);
 
@@ -81,6 +96,7 @@ const webRoutes = (app: Express) => {
 
   // Order
   routes.get("/admin/order", getAdminOrderPage);
+  routes.get("/admin/order/order-detail/:id", getDetailOrder);
 
   // product
   routes.get("/admin/product", getAdminProductPage);
@@ -101,6 +117,14 @@ const webRoutes = (app: Express) => {
   //client
   routes.get("/product/detail-product/:id", getProductDetails);
   routes.post("/add-product-to-cart/:id", postProductToCart);
+  routes.get("/cart", getCartPage);
+  routes.post("/cart/delete-item/:id", postDeleteCartItem);
+  routes.post("/handle-cart-to-checkout", postHandleCartToCheckout);
+  routes.get("/checkout", getCheckoutPage);
+  routes.post("/place-order", postPlaceOrder);
+  routes.get("/thanks", getThankPage);
+  routes.get("/order-history", getOrderHistoryPage);
+  routes.post("/add-to-cart-from-detail-page/:id", addProductToCartFromDetail);
 
   app.use("/", isAdmin, routes); // tất cả url đều phải qua middleware isAdmin
 };

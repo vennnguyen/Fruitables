@@ -76,6 +76,35 @@
     </tr> -->
                                     </tbody>
                                 </table>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item">
+                                            <a class="<%= page == 1 ? 'page-link disabled' : 'page-link'%>"
+                                                href="/admin/user?page=<%=page-1%>" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+
+                                        <% for(var i=1; i <=totalPage; i++) { %>
+                                            <li class="page-item"><a
+                                                    class="<%= i == page ? 'page-link active' : 'page-link' %>"
+                                                    href="/admin/user?page=<%= i%>">
+                                                    <%= i%>
+                                                </a>
+
+                                            </li>
+                                            <% } %>
+
+
+                                                <li class="page-item">
+                                                    <a class="<%= page == totalPage ? 'page-link disabled' : 'page-link'%>"
+                                                        href="/admin/user?page=<%=page+1%>" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                    </ul>
+                                </nav>
+
                             </div>
                         </div>
 

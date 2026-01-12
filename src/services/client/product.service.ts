@@ -15,10 +15,43 @@ const postProductToCartService = async (
   const product = await prisma.product.findUnique({ where: { id: productId } });
   const cart = await prisma.cart.findUnique({
     where: {
-      id: user.id,
+      userId: user.id,
     },
   });
+  console.log("CHECK: ", cart);
+
   if (cart) {
+    // cập nhật giỏ hàng
+    await prisma.cart.update({
+      where: { id: cart.id },
+      data: {
+        sum: {
+          increment: quantity,
+        },
+      },
+    });
+    const cartDetails = await prisma.cartDetail.findFirst({
+      where: {
+        cartId: cart.id,
+        productId: productId,
+      },
+    });
+    await prisma.cartDetail.upsert({
+      where: {
+        id: cartDetails?.id ?? 0,
+      },
+      update: {
+        quantity: {
+          increment: quantity,
+        },
+      },
+      create: {
+        cartId: cart.id,
+        price: product.price,
+        quantity,
+        productId: productId,
+      },
+    });
   } else {
     await prisma.cart.create({
       data: {
@@ -37,4 +70,8 @@ const postProductToCartService = async (
     });
   }
 };
-export { getAllProductService, getProductDetailService };
+export {
+  getAllProductService,
+  getProductDetailService,
+  postProductToCartService,
+};

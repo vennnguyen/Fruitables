@@ -1,3 +1,7 @@
+import {
+  getCartByIdUser,
+  getUserSumCart,
+} from "controllers/client/cart.controller";
 import passport from "passport";
 import { Strategy as localStrategy } from "passport-local";
 import {
@@ -35,9 +39,11 @@ const configPassportLocal = () => {
   passport.deserializeUser(async function (user: any, cb) {
     // từ trên query db lấy user
     const { id } = user;
-    const userDB = await getUserWithRoleByIdService(id);
+    const userDB: any = await getUserWithRoleByIdService(id);
+    const cartId = await getCartByIdUser(id);
+    const sumCart = await getUserSumCart(id);
 
-    return cb(null, { ...userDB });
+    return cb(null, { ...userDB, sumCart: sumCart, cartId: cartId });
   });
 };
 

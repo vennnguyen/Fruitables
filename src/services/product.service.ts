@@ -1,8 +1,26 @@
 import { prisma } from "config/client";
+import { TOTAL_ITEM_PAGE } from "config/constant";
 import { error } from "console";
 import { TProductSchema } from "src/validation/product.schema";
-const getAllProduct = async () => {
-  return prisma.product.findMany();
+
+const getAllProduct = async (page: number) => {
+  try {
+    const pageSize = 6;
+    const skip = (page - 1) * pageSize;
+    const product = await prisma.product.findMany({
+      skip: skip,
+      take: pageSize,
+    });
+    return product;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+};
+const countTotalProductPage = async () => {
+  const pageSize = 6;
+  const product = await prisma.product.count();
+  return Math.ceil(product / pageSize);
 };
 const createProductService = async ({
   name,
@@ -68,4 +86,5 @@ export {
   deleteProductService,
   getDetailProductService,
   postUpdateProductService,
+  countTotalProductPage,
 };

@@ -15,29 +15,106 @@
 
 <body class="sb-nav-fixed">
     <%- include('../layout/header'); -%>
-    <div id="layoutSidenav">
-        <%- include('../layout/sidenav'); -%>
-        <div id="layoutSidenav_content">
-            <main>
-              <div class="container-fluid px-4">
-    <h1 class="mt-4">Manage Orders</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-        <li class="breadcrumb-item active">Orders</li>
-    </ol>
-    <div>table order</div>
-</div>
+        <div id="layoutSidenav">
+            <%- include('../layout/sidenav'); -%>
+                <div id="layoutSidenav_content">
+                    <main>
+                        <div class="container-fluid px-4">
+                            <h1 class="mt-4">Manage Orders</h1>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Orders</li>
+                            </ol>
+                            <div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Total Price</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Payment Method</th>
+                                            <th scope="col">Payment Status</th>
+                                            <th scope="col">Action</th>
+                                    </thead>
+                                    <tbody>
+                                        <% for(var i=0; i < orders.length; i++) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= orders[i].id %>
+                                                </td>
+                                                <td>
+                                                    <%= orders[i].user.fullName %>
+                                                </td>
+                                                <td>
+                                                    <%= new Intl.NumberFormat('vi-VN', { style: 'currency' ,
+                                                        currency: 'VND' }).format(orders[i].totalPrice) %>
 
-            </main>
-            <%- include('../layout/footer'); -%>
+                                                </td>
+                                                <td>
+                                                    <%= orders[i].status %>
+                                                </td>
+                                                <td>
+                                                    <%= orders[i].paymentMethod %>
+                                                </td>
+                                                <td>
+                                                    <%= orders[i].paymentStatus %>
+                                                </td>
+
+                                                <td>
+
+                                                    <form action="/admin/order/order-detail/<%= orders[i].id%>"
+                                                        method="get">
+                                                        <button class="btn btn-warning">Detail view</button>
+                                                    </form>
+
+
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                    </tbody>
+                                </table>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item">
+                                            <a class="<%= page == 1 ? 'page-link disabled' : 'page-link'%>"
+                                                href="/admin/order?page=<%=page-1%>" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+
+                                        <% for(var i=1; i <=totalPage; i++) { %>
+                                            <li class="page-item"><a
+                                                    class="<%= i == page ? 'page-link active' : 'page-link'%>"
+                                                    href="/admin/order?page=<%=i%>">
+                                                    <%=i%>
+                                                </a>
+
+                                            </li>
+                                            <% } %>
+
+
+                                                <li class="page-item">
+                                                    <a class="<%= page == totalPage ? 'page-link disabled' : 'page-link'%>"
+                                                        href="/admin/order?page=<%= page+1%>" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
+                    </main>
+                    <%- include('../layout/footer'); -%>
+                </div>
         </div>
-    </div>
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="/admin/js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="/admin/js/datatables-simple-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+        <script src="/admin/js/scripts.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"></script>
+        <script src="/admin/js/datatables-simple-demo.js"></script>
 </body>
 
 </html>
